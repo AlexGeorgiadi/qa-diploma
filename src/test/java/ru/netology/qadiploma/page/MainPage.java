@@ -1,7 +1,6 @@
 package ru.netology.qadiploma.page;
 
 import com.codeborne.selenide.SelenideElement;
-import org.example.Main;
 import ru.netology.qadiploma.data.DataHelper;
 import ru.netology.qadiploma.data.DataHelper.Info;
 
