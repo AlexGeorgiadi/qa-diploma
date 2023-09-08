@@ -18,7 +18,7 @@ Docker
 **для работы с Postgres**: ./gradlew test -Ddb.url=jdbc:postgresql://localhost:5432/app
 
 ## Просмотр репорта Allure.
-В терминале IntelliJ IDEA выполнить команду gradlew allureServe
+В терминале IntelliJ IDEA выполнить команду ./gradlew allureServe
 
 ## Остановка контейнера Docker.
 В корневой папке проекта запустить терминал и выполнить команду docker-compose down.
