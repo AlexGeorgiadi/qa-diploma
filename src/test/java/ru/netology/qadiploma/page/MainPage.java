@@ -1,10 +1,6 @@
 package ru.netology.qadiploma.page;
 
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.qadiploma.data.DataHelper;
-import ru.netology.qadiploma.data.DataHelper.Info;
-
-import java.text.ParseException;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.appear;
@@ -23,6 +19,7 @@ public class MainPage {
     private SelenideElement successNotification = $x("//*[contains(text(),'Успешно')]");
     private SelenideElement refusalNotification = $x("//*[contains(text(),'Банк отказал')]");
     private SelenideElement wrongFormatNotification = $x("//*[contains(text(),'Неверный формат')]");
+    private SelenideElement wrongDateNotification = $x("//*[contains(text(),'Неверно указан')]");
     private SelenideElement cardExpiredNotification = $x("//*[contains(text(),'Истёк срок действия карты')]");
     private SelenideElement requiredField = $x("//*[contains(text(),'Поле обязательно для заполнения')]");
     private SelenideElement buyHeader = $x("//*[contains(text(),'Оплата по карте')]");
@@ -42,165 +39,43 @@ public class MainPage {
         return this;
     }
 
-    public MainPage buyTourWithCardA(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
+    public MainPage fillTheForm(String cardNumber, String monthMM, String yearYY, String nameLastName, String CVVCVC) {
+        card.setValue(cardNumber);
+        month.setValue(monthMM);
+        year.setValue(yearYY);
+        name.setValue(nameLastName);
+        cvc.setValue(CVVCVC);
         nextButton.click();
+        return this;
+    }
+
+    public MainPage checkSuccessNotification(){
         successNotification.should((appear), Duration.ofSeconds(15));
         return this;
     }
 
-    public MainPage buyTourWithCardAExpiredAfterMay22() throws ParseException {
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDateAfterMay22BeforeToday("MM"));
-        year.setValue(DataHelper.getDateAfterMay22BeforeToday("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
-        successNotification.should((appear), Duration.ofSeconds(15));
-        return this;
-    }
-
-    public MainPage buyTourWithCardAExpiredBeforeMay22() throws ParseException {
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDateBeforeMay22("MM"));
-        year.setValue(DataHelper.getDateBeforeMay22("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
+    public MainPage checkCardExpiredNotification() {
         cardExpiredNotification.shouldBe(visible);
         return this;
     }
 
-    public MainPage cyrillicNameWhenBuyTourWithCardA(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameCYR("RU"));
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
+    public MainPage checkWrongFormatNotification(){
         wrongFormatNotification.shouldBe(visible);
         return this;
     }
 
-    public MainPage buyTourWithCardB(){
-        card.setValue(DataHelper.cardB());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
+    public MainPage checkRefusalNotification(){
         refusalNotification.should((appear), Duration.ofSeconds(15));
         return this;
     }
 
-    public MainPage emptyMonthFieldWhenBuyTourWithCardA(){
-        card.setValue(DataHelper.cardA());
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
+    public MainPage checkRequiredField(){
         requiredField.shouldBe(visible);
         return this;
     }
 
-    public MainPage emptyYearFieldWhenBuyTourWithCardA(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
-        requiredField.shouldBe(visible);
+    public MainPage checkWrongDateNotification(){
+        wrongDateNotification.shouldBe(visible);
         return this;
     }
-
-    public MainPage emptyNameFieldWhenBuyTourWithCardA(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
-        requiredField.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage emptyCVCFieldWhenBuyTourWithCardA(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        nextButton.click();
-        requiredField.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage cardNumberOf15Digits(){
-        card.setValue(DataHelper.invalidCard());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
-        wrongFormatNotification.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage digitsInTheNameField(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.getCVC());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
-        wrongFormatNotification.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage nameInOneWord(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameWithoutSpaces());
-        cvc.setValue(DataHelper.getCVC());
-        nextButton.click();
-        wrongFormatNotification.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage cvcIn2Digits(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDate("MM"));
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getInvalidCVC());
-        nextButton.click();
-        wrongFormatNotification.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage invalidMonth(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getInvalidMonth());
-        year.setValue(DataHelper.getDate("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getInvalidCVC());
-        nextButton.click();
-        wrongFormatNotification.shouldBe(visible);
-        return this;
-    }
-
-    public MainPage cardExpirationAfter5Years(){
-        card.setValue(DataHelper.cardA());
-        month.setValue(DataHelper.getDateMoreThan5Years("MM"));
-        year.setValue(DataHelper.getDateMoreThan5Years("YY"));
-        name.setValue(DataHelper.generateNameLAT());
-        cvc.setValue(DataHelper.getInvalidCVC());
-        nextButton.click();
-        wrongFormatNotification.shouldBe(visible);
-        return this;
-    }
-
 }

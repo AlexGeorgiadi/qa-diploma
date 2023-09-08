@@ -1,7 +1,6 @@
 package ru.netology.qadiploma.data;
 
 import com.github.javafaker.Faker;
-import lombok.Value;
 import ru.homyakin.iuliia.Schemas;
 import ru.homyakin.iuliia.Translator;
 
@@ -17,7 +16,6 @@ public class DataHelper {
 
     private DataHelper() {
     }
-
 
     public static String cardA() {
         String cardA = "4444 4444 4444 4441";
@@ -64,11 +62,9 @@ public class DataHelper {
 
     public static long diffBetweenMay22AndNow() throws ParseException {
         var faker = new Faker();
-
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date firstDate = sdf.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         Date secondDate = sdf.parse("05/01/2022");
-
         long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
         long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
@@ -77,29 +73,23 @@ public class DataHelper {
 
     public static String getDateAfterMay22BeforeToday(String pattern) throws ParseException {
         var faker = new Faker();
-
         long minusDays = faker.number().numberBetween(1, diffBetweenMay22AndNow());
-
         return LocalDate.now().minusDays(minusDays).minusDays(31).format(DateTimeFormatter.ofPattern(pattern));
     }
 
     public static String getDateBeforeMay22(String pattern) throws ParseException {
         var faker = new Faker();
-
         long daysToGetBeforeApr22 = faker.number().numberBetween(diffBetweenMay22AndNow(), 5000);
-
         return LocalDate.now().minusDays(daysToGetBeforeApr22).format(DateTimeFormatter.ofPattern(pattern));
     }
 
     public static String getCVC() {
         var faker = new Faker();
-
         return faker.number().digits(3);
     }
 
     public static String getInvalidMonth() {
         var faker = new Faker();
-
         int number = faker.number().numberBetween(13, 99);
         return String.valueOf(number);
     }
@@ -107,15 +97,5 @@ public class DataHelper {
 
     public static String getInvalidCVC() {
         return getCVC().replaceAll(".$", "");
-    }
-
-
-    @Value
-    public static class Info {
-        String card;
-        String month;
-        String year;
-        String name;
-        String cvc;
     }
 }

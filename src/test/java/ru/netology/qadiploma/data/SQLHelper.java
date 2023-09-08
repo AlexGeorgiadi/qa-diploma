@@ -15,6 +15,10 @@ import ru.netology.qadiploma.data.tables.PaymentEntity;
 
 public class SQLHelper {
     private static Connection conn;
+    static String url = System.getProperty("db.url");
+    static String user = System.getProperty("db.login");
+    static String password = System.getProperty("db.pass");
+
 
     private static final String creditSQLQuery = "SELECT * FROM credit_request_entity WHERE created IN (SELECT max(created) " +
             "FROM credit_request_entity);";
@@ -26,7 +30,7 @@ public class SQLHelper {
     @SneakyThrows
     private static Connection getConnection() {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "app", "pass");
+            conn = DriverManager.getConnection(url, "app", "pass");
         } catch (SQLException e) {
             e.printStackTrace();
         }
